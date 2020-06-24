@@ -8,12 +8,15 @@ ENV pip_packages "ansible cryptography"
 # Install dependencies.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-       sudo systemd systemd-sysv \
+       sudo systemd systemd-sysv gpg-agent\
        build-essential wget libffi-dev libssl-dev \
        python3-pip python3-dev python3-setuptools python3-wheel \
     && rm -rf /var/lib/apt/lists/* \
     && rm -Rf /usr/share/doc && rm -Rf /usr/share/man \
     && apt-get clean
+
+RUN rm -f /lib/systemd/system/systemd*udev* \
+          /lib/systemd/system/getty.target
 
 # Install Ansible via pip.
 RUN pip3 install $pip_packages
